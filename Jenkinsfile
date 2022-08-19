@@ -4,15 +4,15 @@ import java.time.*
 import java.time.format.DateTimeFormatter
 //webhook test 7
 //Variables that are specefic for each user - to be changed
-USERNAME = "TBD"
+USERNAME = "wsoualhi"
 //variables that are same for everyone 
 IMAGE_REPOSITORY = "simple-nginx"
 KUBERNETES_INGRESS = "ingress"
 //Prod variables 
-TARGET_CLUSTER_REGISTRY_URI = 'https://registry.prod.equinix.presales.demo.mirantis.com'
-TARGET_CLUSTER_REGISTRY_HOSTNAME = 'registry.prod.equinix.presales.demo.mirantis.com'
-TARGET_CLUSTER_KUBE_DOMAIN_NAME = "prod.presales.demo.mirantis.com"
-TARGET_CLUSTER_KUBERNETES_CONTEXT = "ucp_kube.prod.equinix.presales.demo.mirantis.com:5443_jenkins"
+TARGET_CLUSTER_REGISTRY_URI = 'https://registry.presales.demo.mirantis.com'
+TARGET_CLUSTER_REGISTRY_HOSTNAME = 'registry.presales.demo.mirantis.com'
+TARGET_CLUSTER_KUBE_DOMAIN_NAME = "registry-master-lb-4390f129ba3f3aea.elb.eu-central-1.amazonaws.com"
+TARGET_CLUSTER_KUBERNETES_CONTEXT = "ucp_registry-master-lb-4390f129ba3f3aea.elb.eu-central-1.amazonaws.com:6443_admin"
 //variables that change for every user
 IMAGE_NAMESPACE_DEV = "${USERNAME}-dev"
 IMAGE_NAMESPACE_PROD = "${USERNAME}-prod"
