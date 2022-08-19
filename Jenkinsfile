@@ -81,8 +81,8 @@ node {
                  "IMAGE_TAG=${IMAGE_TAG}",
                  ]) {
             withCredentials([string(credentialsId: 'TRUST_SIGNER_PASSPHRASE_CREDENTIALS_ID', variable: 'DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE')]) {
-                sh 'docker trust key load /var/lib/jenkins/client-bundle/key.pem'
-                sh 'docker trust sign ${REGISTRY_HOSTNAME}/${IMAGE_NAMESPACE}/${IMAGE_REPOSITORY}:${IMAGE_TAG}'
+                sh 'sudo docker trust key load /var/lib/jenkins/client-bundle/key.pem'
+                sh 'sudo docker trust sign ${REGISTRY_HOSTNAME}/${IMAGE_NAMESPACE}/${IMAGE_REPOSITORY}:${IMAGE_TAG}'
             }
         }
     }
