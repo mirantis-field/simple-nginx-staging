@@ -1,18 +1,17 @@
-
 import java.time.LocalDateTime
 import java.time.*
 import java.time.format.DateTimeFormatter
 //webhook test 7
 //Variables that are specefic for each user - to be changed
-USERNAME = "TBD"
+USERNAME = "wsoualhi"
 //variables that are same for everyone 
 IMAGE_REPOSITORY = "simple-nginx"
 KUBERNETES_INGRESS = "ingress"
 //Prod variables 
-TARGET_CLUSTER_REGISTRY_URI = 'https://registry.prod.equinix.presales.demo.mirantis.com'
-TARGET_CLUSTER_REGISTRY_HOSTNAME = 'registry.prod.equinix.presales.demo.mirantis.com'
-TARGET_CLUSTER_KUBE_DOMAIN_NAME = "prod.presales.demo.mirantis.com"
-TARGET_CLUSTER_KUBERNETES_CONTEXT = "ucp_kube.prod.equinix.presales.demo.mirantis.com:5443_jenkins"
+TARGET_CLUSTER_REGISTRY_URI = 'https://registry.presales.demo.mirantis.com'
+TARGET_CLUSTER_REGISTRY_HOSTNAME = 'registry.presales.demo.mirantis.com'
+TARGET_CLUSTER_KUBE_DOMAIN_NAME = "presales.demo.mirantis.com"
+TARGET_CLUSTER_KUBERNETES_CONTEXT = "ucp_registry-master-lb-4390f129ba3f3aea.elb.eu-central-1.amazonaws.com:6443_admin"
 //variables that change for every user
 IMAGE_NAMESPACE_DEV = "${USERNAME}-dev"
 IMAGE_NAMESPACE_PROD = "${USERNAME}-prod"
@@ -41,21 +40,21 @@ node {
     }
 
     stage('Push') {
-        //MSRequinixProd are the credentials configured in Jenkins
-        docker.withRegistry(TARGET_CLUSTER_REGISTRY_URI, 'MSRequinixProd') {
+        //MSRaccess are the credentials configured in Jenkins
+        docker.withRegistry(TARGET_CLUSTER_REGISTRY_URI, 'MSRaccess') {
             docker_image.push(IMAGE_TAG)
         }
     }
 
     stage('Scan') {
         
-        httpRequest acceptType: 'APPLICATION_JSON', authentication: 'MSRequinixProd', contentType: 'APPLICATION_JSON', httpMode: 'POST', ignoreSslErrors: true, responseHandle: 'NONE', url: "${TARGET_CLUSTER_REGISTRY_URI}/api/v0/imagescan/scan/${IMAGE_NAMESPACE_DEV}/${IMAGE_REPOSITORY}/${IMAGE_TAG}/linux/amd64"
+        httpRequest acceptType: 'APPLICATION_JSON', authentication: 'MSRaccess', contentType: 'APPLICATION_JSON', httpMode: 'POST', ignoreSslErrors: true, responseHandle: 'NONE', url: "${TARGET_CLUSTER_REGISTRY_URI}/api/v0/imagescan/scan/${IMAGE_NAMESPACE_DEV}/${IMAGE_REPOSITORY}/${IMAGE_TAG}/linux/amd64"
 
         def scan_result
 
         def scanning = true
         while(scanning) {
-            def scan_result_response = httpRequest acceptType: 'APPLICATION_JSON', authentication: 'MSRequinixProd', contentType: 'APPLICATION_JSON', httpMode: 'GET', ignoreSslErrors: true, responseHandle: 'LEAVE_OPEN', url: "${TARGET_CLUSTER_REGISTRY_URI}/api/v0/imagescan/scansummary/repositories/${IMAGE_NAMESPACE_DEV}/${IMAGE_REPOSITORY}/${IMAGE_TAG}"
+            def scan_result_response = httpRequest acceptType: 'APPLICATION_JSON', authentication: 'MSRaccess', contentType: 'APPLICATION_JSON', httpMode: 'GET', ignoreSslErrors: true, responseHandle: 'LEAVE_OPEN', url: "${TARGET_CLUSTER_REGISTRY_URI}/api/v0/imagescan/scansummary/repositories/${IMAGE_NAMESPACE_DEV}/${IMAGE_REPOSITORY}/${IMAGE_TAG}"
             scan_result = readJSON text: scan_result_response.content
 
             if (scan_result.size() != 1) {
@@ -112,7 +111,7 @@ node {
     }
 
     stage('Promote') {
-        httpRequest acceptType: 'APPLICATION_JSON', authentication: 'MSRequinixProd', contentType: 'APPLICATION_JSON', httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"targetRepository\": \"${IMAGE_NAMESPACE_PROD}/${IMAGE_REPOSITORY}\", \"targetTag\": \"${IMAGE_TAG}\"}", responseHandle: 'NONE', url: "${TARGET_CLUSTER_REGISTRY_URI}/api/v0/repositories/${IMAGE_NAMESPACE_DEV}/${IMAGE_REPOSITORY}/tags/${IMAGE_TAG}/promotion"
+        httpRequest acceptType: 'APPLICATION_JSON', authentication: 'MSRaccess', contentType: 'APPLICATION_JSON', httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"targetRepository\": \"${IMAGE_NAMESPACE_PROD}/${IMAGE_REPOSITORY}\", \"targetTag\": \"${IMAGE_TAG}\"}", responseHandle: 'NONE', url: "${TARGET_CLUSTER_REGISTRY_URI}/api/v0/repositories/${IMAGE_NAMESPACE_DEV}/${IMAGE_REPOSITORY}/tags/${IMAGE_TAG}/promotion"
     }
 
     stage('Sign Development Image') {
