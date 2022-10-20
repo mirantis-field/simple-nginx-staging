@@ -12,9 +12,9 @@ KUBERNETES_INGRESS = "ingress"
 //TARGET_CLUSTER_REGISTRY_URI = 'https://registry.presales.demo.mirantis.com'
 TARGET_CLUSTER_REGISTRY_URI = 'https://a7d9214fd499445ca8cfead69c492f12-702781752.eu-central-1.elb.amazonaws.com'
 //TARGET_CLUSTER_REGISTRY_HOSTNAME = 'registry.presales.demo.mirantis.com'
-TARGET_CLUSTER_REGISTRY_HOSTNAME = 'https://a7d9214fd499445ca8cfead69c492f12-702781752.eu-central-1.elb.amazonaws.com'
+TARGET_CLUSTER_REGISTRY_HOSTNAME = 'a7d9214fd499445ca8cfead69c492f12-702781752.eu-central-1.elb.amazonaws.com'
 //TARGET_CLUSTER_KUBE_DOMAIN_NAME = "presales.demo.mirantis.com"
-TARGET_CLUSTER_KUBE_DOMAIN_NAME = "https://registry-master-lb-4390f129ba3f3aea.elb.eu-central-1.amazonaws.com"
+TARGET_CLUSTER_KUBE_DOMAIN_NAME = "registry-master-lb-4390f129ba3f3aea.elb.eu-central-1.amazonaws.com"
 TARGET_CLUSTER_KUBERNETES_CONTEXT = "ucp_registry-master-lb-4390f129ba3f3aea.elb.eu-central-1.amazonaws.com:6443_admin"
 //variables that change for every user
 IMAGE_NAMESPACE_DEV = "${USERNAME}-dev"
