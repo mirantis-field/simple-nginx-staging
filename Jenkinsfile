@@ -8,9 +8,9 @@ USERNAME = "wsoualhi"
 IMAGE_REPOSITORY = "simple-nginx"
 KUBERNETES_INGRESS = "ingress"
 //Prod variables 
-TARGET_CLUSTER_REGISTRY_URI = 'https://registry.presales.demo.mirantis.com'
-TARGET_CLUSTER_REGISTRY_HOSTNAME = 'registry.presales.demo.mirantis.com'
-TARGET_CLUSTER_KUBE_DOMAIN_NAME = "presales.demo.mirantis.com"
+TARGET_CLUSTER_REGISTRY_URI = 'https://registry.mirantisdemo.com'
+TARGET_CLUSTER_REGISTRY_HOSTNAME = 'registry.mirantisdemo.com'
+TARGET_CLUSTER_KUBE_DOMAIN_NAME = "mirantisdemo.com"
 TARGET_CLUSTER_KUBERNETES_CONTEXT = "ucp_registry-master-lb-4390f129ba3f3aea.elb.eu-central-1.amazonaws.com:6443_admin"
 //variables that change for every user
 IMAGE_NAMESPACE_DEV = "${USERNAME}-dev"
