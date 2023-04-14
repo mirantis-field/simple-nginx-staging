@@ -11,7 +11,7 @@ KUBERNETES_INGRESS = "ingress"
 TARGET_CLUSTER_REGISTRY_URI = 'https://registry.mirantisdemo.com'
 TARGET_CLUSTER_REGISTRY_HOSTNAME = 'registry.mirantisdemo.com'
 TARGET_CLUSTER_KUBE_DOMAIN_NAME = "mirantisdemo.com"
-TARGET_CLUSTER_KUBERNETES_CONTEXT = "ucp_registry-master-lb-4390f129ba3f3aea.elb.eu-central-1.amazonaws.com:6443_admin"
+TARGET_CLUSTER_KUBERNETES_CONTEXT = "mirantis-demo-dvi-master-lb-39a4385f9f006d61.elb.eu-west-3.amazonaws.com:6443_admin"
 //variables that change for every user
 IMAGE_NAMESPACE_DEV = "${USERNAME}-dev"
 IMAGE_NAMESPACE_PROD = "${USERNAME}-prod"
