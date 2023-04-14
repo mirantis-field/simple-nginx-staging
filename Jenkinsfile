@@ -8,8 +8,8 @@ USERNAME = "dvirassamy"
 IMAGE_REPOSITORY = "simple-nginx"
 KUBERNETES_INGRESS = "ingress"
 //Prod variables 
-TARGET_CLUSTER_REGISTRY_URI = 'https://registry.mirantisdemo.com'
-TARGET_CLUSTER_REGISTRY_HOSTNAME = 'registry.mirantisdemo.com'
+TARGET_CLUSTER_REGISTRY_URI = 'https://mirantis-demo-dvi-msr-lb-c6747ea761ec6377.elb.eu-west-3.amazonaws.com'
+TARGET_CLUSTER_REGISTRY_HOSTNAME = 'mirantis-demo-dvi-msr-lb-c6747ea761ec6377.elb.eu-west-3.amazonaws.com'
 TARGET_CLUSTER_KUBE_DOMAIN_NAME = "mirantisdemo.com"
 TARGET_CLUSTER_KUBERNETES_CONTEXT = "mirantis-demo-dvi-master-lb-39a4385f9f006d61.elb.eu-west-3.amazonaws.com:6443_admin"
 //variables that change for every user
