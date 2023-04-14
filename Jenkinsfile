@@ -73,9 +73,9 @@ node {
         }
         println('Response JSON: ' + scan_result)
     }
-
+/*
     stage('Sign Development Image') {
-        /*
+        
         withEnv(["REGISTRY_HOSTNAME=${TARGET_CLUSTER_REGISTRY_HOSTNAME}",
                  "IMAGE_NAMESPACE=${IMAGE_NAMESPACE_DEV}",
                  "IMAGE_REPOSITORY=${IMAGE_REPOSITORY}",
@@ -86,8 +86,9 @@ node {
                 sh 'docker trust sign ${REGISTRY_HOSTNAME}/${IMAGE_NAMESPACE}/${IMAGE_REPOSITORY}:${IMAGE_TAG}'
             }
         }
-        */
+       
     }
+     */
 
     stage('Deploy to Development') {
         withEnv(["APPLICATION_FQDN=${IMAGE_REPOSITORY}.dev.${APPLICATION_DOMAIN}",
@@ -116,9 +117,9 @@ node {
     stage('Promote') {
         httpRequest acceptType: 'APPLICATION_JSON', authentication: 'MSRaccess', contentType: 'APPLICATION_JSON', httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"targetRepository\": \"${IMAGE_NAMESPACE_PROD}/${IMAGE_REPOSITORY}\", \"targetTag\": \"${IMAGE_TAG}\"}", responseHandle: 'NONE', url: "${TARGET_CLUSTER_REGISTRY_URI}/api/v0/repositories/${IMAGE_NAMESPACE_DEV}/${IMAGE_REPOSITORY}/tags/${IMAGE_TAG}/promotion"
     }
-
+/*
     stage('Sign Development Image') {
-        /*
+        
         withEnv(["REGISTRY_HOSTNAME=${TARGET_CLUSTER_REGISTRY_HOSTNAME}",
                  "IMAGE_NAMESPACE=${IMAGE_NAMESPACE_PROD}",
                  "IMAGE_REPOSITORY=${IMAGE_REPOSITORY}",
@@ -130,9 +131,9 @@ node {
                 sh 'docker trust sign ${REGISTRY_HOSTNAME}/${IMAGE_NAMESPACE}/${IMAGE_REPOSITORY}:${IMAGE_TAG}'
             }
         }
-        */
+        
     }
-
+*/
     stage('Deploy to Production') {
         withEnv(["APPLICATION_FQDN=${IMAGE_REPOSITORY}.prod.${APPLICATION_DOMAIN}",
                  "REGISTRY_HOSTNAME=${TARGET_CLUSTER_REGISTRY_HOSTNAME}",
