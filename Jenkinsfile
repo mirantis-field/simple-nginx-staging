@@ -1,17 +1,18 @@
 import java.time.LocalDateTime
 import java.time.*
 import java.time.format.DateTimeFormatter
-//webhook test 9
+//webhook test 11
 //Variables that are specefic for each user - to be changed
-USERNAME = "wsoualhi"
+USERNAME = "dvirassamy"
 //variables that are same for everyone 
 IMAGE_REPOSITORY = "simple-nginx"
 KUBERNETES_INGRESS = "ingress"
 //Prod variables 
 TARGET_CLUSTER_REGISTRY_URI = 'https://registry.mirantisdemo.com'
 TARGET_CLUSTER_REGISTRY_HOSTNAME = 'registry.mirantisdemo.com'
+TARGET_CLUSTER_REGISTRY_HOSTNAME2 = 'mirantis-demo-dvi-msr-lb-c6747ea761ec6377.elb.eu-west-3.amazonaws.com'
 TARGET_CLUSTER_KUBE_DOMAIN_NAME = "mirantisdemo.com"
-TARGET_CLUSTER_KUBERNETES_CONTEXT = "mirantis-demo-dvi-master-lb-39a4385f9f006d61.elb.eu-west-3.amazonaws.com:6443_admin"
+TARGET_CLUSTER_KUBERNETES_CONTEXT = "ucp_mirantis-demo-dvi-master-lb-39a4385f9f006d61.elb.eu-west-3.amazonaws.com:6443_admin"
 //variables that change for every user
 IMAGE_NAMESPACE_DEV = "${USERNAME}-dev"
 IMAGE_NAMESPACE_PROD = "${USERNAME}-prod"
@@ -45,7 +46,7 @@ node {
             docker_image.push(IMAGE_TAG)
         }
     }
-
+    
     stage('Scan') {
         
         httpRequest acceptType: 'APPLICATION_JSON', authentication: 'MSRaccess', contentType: 'APPLICATION_JSON', httpMode: 'POST', ignoreSslErrors: true, responseHandle: 'NONE', url: "${TARGET_CLUSTER_REGISTRY_URI}/api/v0/imagescan/scan/${IMAGE_NAMESPACE_DEV}/${IMAGE_REPOSITORY}/${IMAGE_TAG}/linux/amd64"
@@ -72,8 +73,9 @@ node {
         }
         println('Response JSON: ' + scan_result)
     }
-
+/*
     stage('Sign Development Image') {
+        
         withEnv(["REGISTRY_HOSTNAME=${TARGET_CLUSTER_REGISTRY_HOSTNAME}",
                  "IMAGE_NAMESPACE=${IMAGE_NAMESPACE_DEV}",
                  "IMAGE_REPOSITORY=${IMAGE_REPOSITORY}",
@@ -84,11 +86,13 @@ node {
                 sh 'docker trust sign ${REGISTRY_HOSTNAME}/${IMAGE_NAMESPACE}/${IMAGE_REPOSITORY}:${IMAGE_TAG}'
             }
         }
+       
     }
+     */
 
     stage('Deploy to Development') {
         withEnv(["APPLICATION_FQDN=${IMAGE_REPOSITORY}.dev.${APPLICATION_DOMAIN}",
-                 "REGISTRY_HOSTNAME=${TARGET_CLUSTER_REGISTRY_HOSTNAME}",
+                 "REGISTRY_HOSTNAME=${TARGET_CLUSTER_REGISTRY_HOSTNAME2}",
                  "IMAGE_NAMESPACE=${IMAGE_NAMESPACE_DEV}",
                  "IMAGE_REPOSITORY=${IMAGE_REPOSITORY}",
                  "IMAGE_TAG=${IMAGE_TAG}",
@@ -113,8 +117,9 @@ node {
     stage('Promote') {
         httpRequest acceptType: 'APPLICATION_JSON', authentication: 'MSRaccess', contentType: 'APPLICATION_JSON', httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"targetRepository\": \"${IMAGE_NAMESPACE_PROD}/${IMAGE_REPOSITORY}\", \"targetTag\": \"${IMAGE_TAG}\"}", responseHandle: 'NONE', url: "${TARGET_CLUSTER_REGISTRY_URI}/api/v0/repositories/${IMAGE_NAMESPACE_DEV}/${IMAGE_REPOSITORY}/tags/${IMAGE_TAG}/promotion"
     }
-
+/*
     stage('Sign Development Image') {
+        
         withEnv(["REGISTRY_HOSTNAME=${TARGET_CLUSTER_REGISTRY_HOSTNAME}",
                  "IMAGE_NAMESPACE=${IMAGE_NAMESPACE_PROD}",
                  "IMAGE_REPOSITORY=${IMAGE_REPOSITORY}",
@@ -126,8 +131,9 @@ node {
                 sh 'docker trust sign ${REGISTRY_HOSTNAME}/${IMAGE_NAMESPACE}/${IMAGE_REPOSITORY}:${IMAGE_TAG}'
             }
         }
+        
     }
-
+*/
     stage('Deploy to Production') {
         withEnv(["APPLICATION_FQDN=${IMAGE_REPOSITORY}.prod.${APPLICATION_DOMAIN}",
                  "REGISTRY_HOSTNAME=${TARGET_CLUSTER_REGISTRY_HOSTNAME}",
